@@ -1,29 +1,35 @@
 package com.cpad.group13.campusconnectapplication.service;
 
-import com.cpad.group13.campusconnectapplication.model.UserEntityOAuth;
+import com.cpad.group13.campusconnectapplication.model.Student;
 import com.cpad.group13.campusconnectapplication.oauth2.CustomOAuth2User;
-import com.cpad.group13.campusconnectapplication.repository.UserEntityOAuthRepository;
+import com.cpad.group13.campusconnectapplication.repository.StudentRepository;
+import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
+@Slf4j
 public class UserService {
 
     @Autowired
-    private UserEntityOAuthRepository repo;
+    private StudentRepository repo;
 
     public void processOAuthPostLogin(CustomOAuth2User oauthUser) {
-        Optional<UserEntityOAuth> existUser = repo.findById(oauthUser.getEmail());
 
-        if (existUser.isEmpty()) {
-            UserEntityOAuth newUser = new UserEntityOAuth();
-            newUser.setUserId(oauthUser.getEmail());
-            newUser.setUserName(oauthUser.getName());
-            newUser.setEnabled(true);
+        log.info("inside processOAuthPostLogin");
+        Student existUser = repo.findByEmailId(oauthUser.getEmail());
 
-            repo.save(newUser);
+        if (!Objects.nonNull(existUser)) {
+            //log.info("exist user: " + existUser.toString());
+            Student newStudent = new Student();
+            newStudent.setEmailId(oauthUser.getEmail());
+            newStudent.setVerified(Boolean.TRUE.toString());
+            /*System.out.println("Attributes: ");
+            for (String key : oauthUser.getAttributes().keySet().toArray(new String[0])) {
+                System.out.println("key: " + key + ", value: " + oauthUser.getAttributes().get(key).toString());
+            }*/
+            repo.save(newStudent);
         }
 
     }

@@ -13,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Principal;
 
 @Configuration
 @EnableWebSecurity
@@ -29,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/login", "/oauth2/**").permitAll()
+                .antMatchers("/", "/login", "/oauth2/**", "/saveStudent").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
