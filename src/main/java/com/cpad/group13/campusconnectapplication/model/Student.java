@@ -1,14 +1,12 @@
 package com.cpad.group13.campusconnectapplication.model;
 
-import lombok.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
+import java.util.List;
+import lombok.*;
 
 @Entity
 @Table(name = "student")
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Data
 public class Student {
 
@@ -40,4 +38,10 @@ public class Student {
 
     @Column(name = "verified")
     private String verified;
+
+    @ToString.Exclude
+    @JsonIgnore
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private List<Topic> topics;
 }
