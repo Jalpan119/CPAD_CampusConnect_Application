@@ -17,6 +17,10 @@ public class TopicService {
         return repo.findById(topicId);
     }
 
+    public Iterable<Topic> getTopicsByTopicName(String topicName) {
+        return repo.findByTopicNameContaining(topicName);
+    }
+
     public Iterable<Topic> getAllTopicsByStudentId(Student student) {
         return repo.findAllByStudent(student);
     }

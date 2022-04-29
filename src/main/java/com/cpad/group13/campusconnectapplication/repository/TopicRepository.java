@@ -11,4 +11,7 @@ public interface TopicRepository extends JpaRepository<Topic, Integer> {
 
     @Query("SELECT t FROM Topic t WHERE t.student = ?1")
     Iterable<Topic> findAllByStudent(Student student);
+
+    //@Query("SELECT t FROM Topic t where t.topicName like ?1")
+    Iterable<Topic> findByTopicNameContaining(String topicName);
 }
