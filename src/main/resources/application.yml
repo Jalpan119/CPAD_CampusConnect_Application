@@ -12,11 +12,14 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/campusconnect_sql
     username: root
-    password: 13icuos@051
+    password:
     driver-class-name: com.mysql.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   data:
     rest:
       basePath: /login/oauth2/code/google

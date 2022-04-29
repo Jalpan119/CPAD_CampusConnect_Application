@@ -44,4 +44,10 @@ public class Student {
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private List<Topic> topics;
+
+    @ToString.Exclude
+    @JsonIgnore
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private List<Topic> tags;
 }
