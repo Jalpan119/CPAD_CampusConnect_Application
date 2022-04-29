@@ -89,8 +89,8 @@ public class UserDetailsController {
         }
     }
 
-    @GetMapping(path="/getTopicByTopicName")
-    public @ResponseBody ResponseEntity<Iterable<Topic>> getTopicByTopicName(@RequestParam String name) {
+    @GetMapping(path="/getTopicsByTopicName")
+    public @ResponseBody ResponseEntity<Iterable<Topic>> getTopicsByTopicName(@RequestParam String name) {
         try {
             Iterable<Topic> topics = topicService.getTopicsByTopicName(name);
             return new ResponseEntity<Iterable<Topic>>(topics, HttpStatus.OK);
@@ -136,7 +136,7 @@ public class UserDetailsController {
     //Tag related endpoints
 
     @GetMapping(path="/getTagById/{id}")
-    public @ResponseBody ResponseEntity<Tag> getTagById(@RequestParam Integer id) {
+    public @ResponseBody ResponseEntity<Tag> getTagById(@PathVariable Integer id) {
         try {
             Optional<Tag> tag = tagService.getTagById(id);
             if (tag.isPresent()) {
@@ -145,6 +145,16 @@ public class UserDetailsController {
             } else {
                 return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
             }
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(path="/getTagsByTagName")
+    public @ResponseBody ResponseEntity<Iterable<Tag>> getTagsByTagName(@RequestParam String name) {
+        try {
+            Iterable<Tag> tags = tagService.getTagsByTagName(name);
+            return new ResponseEntity<Iterable<Tag>>(tags, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -178,6 +188,29 @@ public class UserDetailsController {
             return new ResponseEntity<Tag>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //Student search related endpoints
+
+    @GetMapping(path="/findStudentsByTag")
+    public @ResponseBody ResponseEntity<Iterable<Student>> findStudentsByTag(@RequestParam String tag) {
+        try {
+            Iterable<Student> students = studentService.getAllStudentsByTag(tag);
+            return new ResponseEntity<Iterable<Student>>(students, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(path="/findStudentsByFirstName")
+    public @ResponseBody ResponseEntity<Iterable<Student>> getStudentsByFirstName(@RequestParam String name) {
+        try {
+            Iterable<Student> students = studentService.getStudentsByFirstName(name);
+            return new ResponseEntity<Iterable<Student>>(students, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("error in findStudentsByFirstName" + e);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

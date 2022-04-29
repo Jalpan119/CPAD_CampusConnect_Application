@@ -17,6 +17,10 @@ public class TagService {
         return repo.findById(tagId);
     }
 
+    public Iterable<Tag> getTagsByTagName(String tagName) {
+        return repo.findByTagContaining(tagName);
+    }
+
     public Iterable<Tag> getAllTagsByStudentId(Student student) {
         return repo.findAllByStudent(student);
     }

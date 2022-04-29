@@ -24,8 +24,16 @@ public class StudentService {
         return repo.findByEmailId(emailId);
     }
 
+    public Iterable<Student> getStudentsByFirstName(String name) {
+        return repo.findByFirstNameContaining(name);
+    }
+
     public Optional<Student> getStudentById(Integer userId) {
         return repo.findById(userId);
+    }
+
+    public Iterable<Student> getAllStudentsByTag(String tag) {
+        return repo.findAllStudentsByTags(tag);
     }
 
 }
