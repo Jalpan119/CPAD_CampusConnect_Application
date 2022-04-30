@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
+@CrossOrigin(origins = "http://localhost:8100")
 public class UserDetailsController {
 
     @Autowired
@@ -30,7 +31,6 @@ public class UserDetailsController {
     private TagService tagService;
 
     //Student related endpoints
-
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Student> getAllUsers() {
         return studentService.getAllStudents();
