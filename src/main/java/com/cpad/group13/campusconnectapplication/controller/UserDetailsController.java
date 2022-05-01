@@ -1,6 +1,7 @@
 package com.cpad.group13.campusconnectapplication.controller;
 
 import com.cpad.group13.campusconnectapplication.model.*;
+import com.cpad.group13.campusconnectapplication.oauth2.CustomOAuth2User;
 import com.cpad.group13.campusconnectapplication.service.StudentService;
 import com.cpad.group13.campusconnectapplication.service.TagService;
 import com.cpad.group13.campusconnectapplication.service.TopicService;
@@ -11,10 +12,14 @@ import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
@@ -29,6 +34,22 @@ public class UserDetailsController {
 
     @Autowired
     private TagService tagService;
+
+    //To ge current logged-in user
+
+    @GetMapping(path="/getCurrentUser")
+    public @ResponseBody ResponseEntity<ResponseCurrentUser> getCurrentUser(Authentication authentication,
+                                                                            HttpServletRequest request) {
+        try {
+            log.info("request userPrincipal: " + request.getUserPrincipal());
+            log.info("auth principal: " + authentication.getPrincipal());
+            CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
+            ResponseCurrentUser currentUser = new ResponseCurrentUser(oauthUser.getEmail(), oauthUser.getName());
+            return new ResponseEntity<>(currentUser, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     //Student related endpoints
     @GetMapping(path="/all")
@@ -98,7 +119,6 @@ public class UserDetailsController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
 
     @GetMapping(path="/getTopicsOfStudent/{id}")

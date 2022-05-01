@@ -2,7 +2,10 @@ package com.cpad.group13.campusconnectapplication.oauth2;
 
 import com.cpad.group13.campusconnectapplication.service.UserService;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -25,10 +29,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
+        http.cors().configurationSource(request -> {
+                    var cors = new CorsConfiguration();
+                    cors.setAllowedOrigins(List.of("http://localhost:8100"));
+                    cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
+                    cors.setAllowedHeaders(List.of("*"));
+                    cors.setAllowCredentials(true);
+                    return cors;
+                }).and().csrf().disable()
                 .authorizeRequests()
-                //.antMatchers("/", "/login", "/oauth2/**", "/saveStudent", "/saveTopic").permitAll()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/", "/login", "/oauth2/**").permitAll()
+                //.antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
@@ -40,6 +51,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                                         Authentication authentication) throws IOException, ServletException {
+
+                        /*Arrays.stream(response.getHeaderNames().toArray()).forEach(System.out::println);
+                        Cookie cookie = new Cookie("JSESSIONID", "1234");
+                        cookie.setHttpOnly(false);*/
+
+                        /*String cookie = response.getHeader("Set-Cookie");
+                        String[] headers = cookie.split(";");
+
+                        response.setHeader("Set-Cookie", headers[0] + ";" + headers[1]);*/
 
                         CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
 
