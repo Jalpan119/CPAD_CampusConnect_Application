@@ -5,23 +5,15 @@ import com.cpad.group13.campusconnectapplication.oauth2.CustomOAuth2User;
 import com.cpad.group13.campusconnectapplication.service.StudentService;
 import com.cpad.group13.campusconnectapplication.service.TagService;
 import com.cpad.group13.campusconnectapplication.service.TopicService;
-
-import java.io.IOException;
-import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
-
+import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @RestController
@@ -37,7 +29,7 @@ public class UserDetailsController {
     @Autowired
     private TagService tagService;
 
-    //To ge current logged-in user
+    //To get current logged-in user
 
     @GetMapping(path="/getCurrentUser")
     public @ResponseBody ResponseEntity<ResponseCurrentUser> getCurrentUser(Authentication authentication,
@@ -53,13 +45,8 @@ public class UserDetailsController {
         }
     }
 
-    //To logout and redirect to login page
-    @RequestMapping("/logout")
-    void logout(HttpServletResponse response) throws IOException {
-        response.sendRedirect("http://localhost:8100/login");
-    }
-
     //Student related endpoints
+
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Student> getAllUsers() {
         return studentService.getAllStudents();

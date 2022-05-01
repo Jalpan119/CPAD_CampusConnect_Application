@@ -2,10 +2,8 @@ package com.cpad.group13.campusconnectapplication.oauth2;
 
 import com.cpad.group13.campusconnectapplication.service.UserService;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +65,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                         response.sendRedirect("http://localhost:8100/tabs/tab1/");
                     }
-                });
+                })
+                .and()
+                .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("http://localhost:8100/login")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+        );
     }
 
 
