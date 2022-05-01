@@ -65,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                         userService.processOAuthPostLogin(oauthUser);
 
-                        response.sendRedirect("http://localhost:8100/tabs/tab1/"+oauthUser.getEmail());
+                        response.sendRedirect("http://localhost:8100/tabs/tab1/");
                     }
                 });
     }
