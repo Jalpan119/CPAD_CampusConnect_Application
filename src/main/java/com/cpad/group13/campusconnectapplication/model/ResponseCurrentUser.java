@@ -13,5 +13,6 @@ public class ResponseCurrentUser {
 
     private String email;
     private String googleName;
+    private String pictureUrl;
 
 }

@@ -38,7 +38,8 @@ public class UserDetailsController {
             log.info("request userPrincipal: " + request.getUserPrincipal());
             log.info("auth principal: " + authentication.getPrincipal());
             CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
-            ResponseCurrentUser currentUser = new ResponseCurrentUser(oauthUser.getEmail(), oauthUser.getName());
+            ResponseCurrentUser currentUser = new ResponseCurrentUser(oauthUser.getEmail(),
+                    oauthUser.getName(), oauthUser.getPicture());
             return new ResponseEntity<>(currentUser, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

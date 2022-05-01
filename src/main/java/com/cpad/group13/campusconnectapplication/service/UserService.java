@@ -20,15 +20,16 @@ public class UserService {
         log.info("inside processOAuthPostLogin");
         Student existUser = repo.findByEmailId(oauthUser.getEmail());
 
+        /*System.out.println("Attributes: ");
+        for (String key : oauthUser.getAttributes().keySet().toArray(new String[0])) {
+            System.out.println("key: " + key + ", value: " + oauthUser.getAttributes().get(key).toString());
+        }*/
+
         if (!Objects.nonNull(existUser)) {
             //log.info("exist user: " + existUser.toString());
             Student newStudent = new Student();
             newStudent.setEmailId(oauthUser.getEmail());
             newStudent.setVerified(Boolean.TRUE.toString());
-            /*System.out.println("Attributes: ");
-            for (String key : oauthUser.getAttributes().keySet().toArray(new String[0])) {
-                System.out.println("key: " + key + ", value: " + oauthUser.getAttributes().get(key).toString());
-            }*/
             repo.save(newStudent);
         }
 
