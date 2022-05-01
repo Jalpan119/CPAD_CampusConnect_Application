@@ -6,6 +6,7 @@ import com.cpad.group13.campusconnectapplication.service.StudentService;
 import com.cpad.group13.campusconnectapplication.service.TagService;
 import com.cpad.group13.campusconnectapplication.service.TopicService;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,6 +21,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @RestController
@@ -49,6 +51,12 @@ public class UserDetailsController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    //To logout and redirect to login page
+    @RequestMapping("/logout")
+    void logout(HttpServletResponse response) throws IOException {
+        response.sendRedirect("http://localhost:8100/login");
     }
 
     //Student related endpoints
